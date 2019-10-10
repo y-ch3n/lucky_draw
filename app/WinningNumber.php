@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class WinningNumber extends Model
 {
-    protected $fillable = ['number', 'candidate'];
+    protected $fillable = ['number', 'user_id'];
 
     /**
-     * belongs to one candidate
+     * belongs to one user
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function candidate()
+    public function user()
     {
-        return $this->belongsTo(Candidate::class);
+        return $this->belongsTo(User::class);
     }
 }

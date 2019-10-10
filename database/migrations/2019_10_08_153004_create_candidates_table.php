@@ -13,11 +13,7 @@ class CreateCandidatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('candidates', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->text('name');
-            $table->timestamps();
-        });
+        // don't need to create the candidate again
     }
 
     /**

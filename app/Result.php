@@ -9,12 +9,12 @@ class Result extends Model
     protected $fillable = ['prize_type', 'number'];
 
     /**
-     * a result belongs to a candidate
+     * a result belongs to a user
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function candidate()
+    public function user()
     {
-        return $this->belongsTo(Candidate::class);
+        return $this->belongsTo(User::class);
     }
 }

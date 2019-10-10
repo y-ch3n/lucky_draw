@@ -58,6 +58,11 @@
                                 </li>
                             @endif
                         @else
+                            @if (Request::is('/'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('home') }}">Home</a>
+                                </li>
+                            @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -80,7 +85,16 @@
                 </div>
             </div>
         </nav>
-
+        <div class="container">
+            @include('flash::message')
+            @if (!Request::is('/'))
+            <div class="row py-4">
+                <div class="col-3">
+                    <a href="{{ route('result') }}" class="btn btn-outline-info">View Result</a>
+                </div>
+            </div>
+            @endif
+        </div>
         <main class="py-4">
             @yield('content')
         </main>

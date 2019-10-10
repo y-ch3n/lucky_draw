@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Prize;
 use App\WinningNumber;
 use App\Result;
-use App\Candidate;
+use App\User;
 
 class LuckyDrawService
 {
@@ -19,14 +19,14 @@ class LuckyDrawService
             $winning_numbers = [];
             switch ($prizeType) {
                 case Prize::PRIZE_TYPE_GRAND:
-                    $winning_numbers = WinningNumber::whereIn('candidate_id', self::getAvailableGrandPrizeCandidateIds())->pluck('number')->toArray();
+                    $winning_numbers = WinningNumber::whereIn('user_id', self::getAvailableGrandPrizeUserIds())->pluck('number')->toArray();
                     break;
                 case Prize::PRIZE_TYPE_SECOND_1:
                 case Prize::PRIZE_TYPE_SECOND_2:
                 case Prize::PRIZE_TYPE_THIRD_1:
                 case Prize::PRIZE_TYPE_THIRD_2:
                 case Prize::PRIZE_TYPE_THIRD_3:
-                    $winning_numbers = WinningNumber::whereIn('candidate_id', self::getAvailableCandidateIds())->pluck('number')->toArray();
+                    $winning_numbers = WinningNumber::whereIn('user_id', self::getAvailableUserIds())->pluck('number')->toArray();
                     break;
             }
 
@@ -36,7 +36,7 @@ class LuckyDrawService
         }
         $result = null;
         // get the winner
-        $winner = optional(WinningNumber::with('candidate', 'candidate.result')->where('number', $winner_number)->first())->candidate;
+        $winner = optional(WinningNumber::with('user', 'user.result')->where('number', $winner_number)->first())->user;
         if ($winner) {
             if (!$winner->result) {
                 // record the result
@@ -47,27 +47,27 @@ class LuckyDrawService
                 throw new \Exception("$winner->name won one prize previously");
             }
         } else {
-            throw new \Exception("No candidate owns the chosen number: $winner_number");
+            throw new \Exception("No user owns the chosen number: $winner_number");
         }
 
         return $result;
     }
 
-    public static function getAvailableGrandPrizeCandidateIds()
+    public static function getAvailableGrandPrizeUserIds()
     {
-        $highest_winning_numbers_candidate = Candidate::whereDoesntHave('result')
+        $highest_winning_numbers_user = User::whereDoesntHave('result')
                 ->withCount('winningNumbers')
                 ->orderBy('winning_numbers_count', 'DESC')
                 ->first();
-        return Candidate::whereDoesntHave('result')
+        return User::whereDoesntHave('result')
                 ->withCount('winningNumbers')
-                ->having('winning_numbers_count', $highest_winning_numbers_candidate->winning_numbers_count)
+                ->having('winning_numbers_count', $highest_winning_numbers_user->winning_numbers_count)
                 ->pluck('id');
     }
 
-    public static function getAvailableCandidateIds()
+    public static function getAvailableUserIds()
     {
-        return Candidate::whereDoesntHave('result')->pluck('id');
+        return User::whereDoesntHave('result')->pluck('id');
     }
 
     public static function pickANumber(array $numbers)

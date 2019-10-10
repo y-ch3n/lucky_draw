@@ -16,8 +16,8 @@ class CreateWinningNumbersTable extends Migration
         Schema::create('winning_numbers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('number');
-            $table->unsignedBigInteger('candidate_id')->nullable();
-            $table->foreign('candidate_id')->references('id')->on('candidates')->onDelete('set null');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();
         });
     }

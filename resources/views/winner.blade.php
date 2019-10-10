@@ -7,7 +7,7 @@
                 <h1>Winner</h1>
                 <hr>
                 @if (!empty($result))
-                    <p>{{ $result->candidate->name }}</p>
+                    <p>{{ $result->user->name }}</p>
                     <p>{{ $result->number }}</p>
                 @else
                     <p>No winner in this round</p>

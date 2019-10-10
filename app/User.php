@@ -53,4 +53,24 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    /**
+     * one user can have many winning numbers
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function winningNumbers()
+    {
+        return $this->hasMany(WinningNumber::class);
+    }
+
+    /**
+     * a user can have only one result
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function result()
+    {
+        return $this->hasOne(Result::class);
+    }
 }

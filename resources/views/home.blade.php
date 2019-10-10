@@ -4,7 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1>Lucky Draw</h1>
+            <h1>Admin Portal</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h3>Lucky Draw</h3>
             <hr>
             {!! Form::open(['route' => 'draw-a-prize']) !!}
                 <div class="form-group">
@@ -19,7 +24,18 @@
                     <label for="winning_number">Winning Number</label>
                     <input type="text" class="form-control" id="winning_number" name="winning_number">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {!! Form::open(['route' => 'reset-draw', 'onsubmit' => 'return confirm("You will reset all the result. Do you wish to continue?")']) !!}
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger">Reset the Draw</button>
+            </div>
             {!! Form::close() !!}
         </div>
     </div>

@@ -23,4 +23,9 @@ class UserPolicy
     {
         return $user->isAdmin();
     }
+
+    public function resetDraw(User $user)
+    {
+        return $user->isAdmin();
+    }
 }

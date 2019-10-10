@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Result;
 use Illuminate\Http\Request;
 use App\Services\LuckyDrawService;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (!Auth::user()->isAdmin()) {
+            return redirect()->route('member.index');
+        }
         $this->authorize('luckyDraw', Auth::user());
         return view('home');
     }
@@ -41,5 +45,13 @@ class HomeController extends Controller
             $error_message = $e->getMessage();
         }
         return view('winner', compact('result', 'error_message'));
+    }
+
+    public function resetDraw()
+    {
+        $this->authorize('resetDraw', Auth::user());
+        Result::truncate();
+        flash()->success('Successfully reset the draw');
+        return redirect()->back();
     }
 }

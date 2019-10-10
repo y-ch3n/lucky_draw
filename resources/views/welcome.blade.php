@@ -1,101 +1,33 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-
-            .required {
-                color: red;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                {!! Form::open(['route' => 'register-winning-number']) !!}
-                <div class="form-group">
-                    <label for="name">Your name <span class="required">*</span></label>
-                    {!! Form::text('name', null, ['placeholder' => 'Enter your name', 'id' => 'name', 'class' => 'form-control', 'required', 'autofocus']) !!}
-                </div>
-                <div class="form-group">
-                    <label for="winning_number">Winning Number <span class="required">*</span></label>
-                    {!! Form::text('winning_number', null, ['placeholder' => 'Enter your winning number', 'id' => 'winning_number', 'class' => 'form-control', 'required']) !!}
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-                {!! Form::close() !!}
+@section('content')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>Drawing Result</h1>
             </div>
         </div>
-    </body>
-</html>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Prize</th>
+                            <th scope="col">Winner</th>
+                            <th scope="col">Winning Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(\App\Prize::PRIZE_TYPES_ARRAY as $key => $prize_type)
+                            <tr>
+                                <th scope="row">{{ $prize_type }}</th>
+                                <td>{{ optional(optional($results->where('prize_type', $key)->first())->user)->name ?? 'No winner yet' }}</td>
+                                <td>{{ optional($results->where('prize_type', $key)->first())->number }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endsection

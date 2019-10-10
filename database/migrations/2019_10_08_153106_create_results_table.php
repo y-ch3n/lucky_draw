@@ -17,8 +17,8 @@ class CreateResultsTable extends Migration
             $table->bigIncrements('id');
             $table->tinyInteger('prize_type');
             $table->text('number');
-            $table->unsignedBigInteger('candidate_id')->nullable();
-            $table->foreign('candidate_id')->references('id')->on('candidates')->onDelete('set null');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();
         });
     }
